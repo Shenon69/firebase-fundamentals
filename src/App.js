@@ -2,7 +2,13 @@ import "./App.css";
 import { Auth } from "./components/auth";
 import { db } from "./config/firebase";
 import { useEffect, useState } from "react";
-import { getDocs, collection, addDoc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
 function App() {
   const [movieList, setMovieList] = useState([]);
@@ -32,7 +38,7 @@ function App() {
 
   useEffect(() => {
     getMovieList();
-  }, []);
+  });
 
   const onSubmitMovie = async () => {
     try {
@@ -45,6 +51,11 @@ function App() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const deleteMovie = async (id) => {
+    const movieDoc = doc(db, "movies", id);
+    await deleteDoc(movieDoc);
   };
 
   return (
@@ -75,6 +86,8 @@ function App() {
               {movie.title}
             </h1>
             <p>{movie.releaseDate}</p>
+
+            <button onClick={() => deleteMovie(movie.id)}>Delete Movie</button>
           </div>
         ))}
       </div>
