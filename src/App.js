@@ -7,8 +7,11 @@ import {
   collection,
   addDoc,
   deleteDoc,
+  updateDoc,
   doc,
 } from "firebase/firestore";
+
+//There will be an issue in updating title, cause we create this in one component if we used separate button it will be update in another title
 
 function App() {
   const [movieList, setMovieList] = useState([]);
@@ -19,6 +22,9 @@ function App() {
   const [newMovieTitle, setNewMovieTitle] = useState("");
   const [newMovieReleaseDate, setNewMovieReleaseDate] = useState(0);
   const [isNewMovieOscar, setisNewMovieOscar] = useState(false);
+
+  //Update Title State
+  const [updateTitle, setUpdateTitle] = useState("");
 
   const getMovieList = async () => {
     //GET DATA
@@ -58,6 +64,11 @@ function App() {
     await deleteDoc(movieDoc);
   };
 
+  const updateMovieTitle = async (id) => {
+    const movieDoc = doc(db, "movies", id);
+    await updateDoc(movieDoc, { title: updateTitle });
+  };
+
   return (
     <div className="App">
       <Auth />
@@ -88,6 +99,14 @@ function App() {
             <p>{movie.releaseDate}</p>
 
             <button onClick={() => deleteMovie(movie.id)}>Delete Movie</button>
+
+            <input
+              placeholder="New Title..."
+              onChange={(e) => setUpdateTitle(e.target.value)}
+            />
+            <button onClick={() => updateMovieTitle(movie.id)}>
+              Update Title
+            </button>
           </div>
         ))}
       </div>
