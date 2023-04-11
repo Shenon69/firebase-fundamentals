@@ -1,6 +1,6 @@
 import "./App.css";
 import { Auth } from "./components/auth";
-import { db } from "./config/firebase";
+import { db, auth } from "./config/firebase";
 import { useEffect, useState } from "react";
 import {
   getDocs,
@@ -44,7 +44,7 @@ function App() {
 
   useEffect(() => {
     getMovieList();
-  });
+  }, []);
 
   const onSubmitMovie = async () => {
     try {
@@ -52,6 +52,7 @@ function App() {
         title: newMovieTitle,
         releaseDate: newMovieReleaseDate,
         recievedAnOscar: isNewMovieOscar,
+        userId: auth?.currentUser?.uid,
       });
       getMovieList();
     } catch (err) {
