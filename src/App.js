@@ -11,7 +11,7 @@ import {
   doc,
 } from "firebase/firestore";
 
-//There will be an issue in updating title, cause we create this in one component if we used separate button it will be update in another title
+//There will be an issue in updating title, cause we create this in one component if we used separate button it will be update in another title, it is always better to use new tittles
 
 function App() {
   const [movieList, setMovieList] = useState([]);
